@@ -1,0 +1,45 @@
+#
+# Omnivision TCM touchscreen driver configuration
+#
+menuconfig TOUCHSCREEN_OMNIVISION_TCM
+	bool "Omnivision TCM touchscreen"
+	default n
+	help
+	  Say Y here if you have a Omnivision TCM touchscreen connected
+	  to your system.
+
+	  If unsure, say N.
+
+if TOUCHSCREEN_OMNIVISION_TCM
+
+choice
+	default TOUCHSCREEN_OMNIVISION_TCM_I2C
+	prompt "Omnivision TCM bus module"
+config TOUCHSCREEN_OMNIVISION_TCM_I2C
+	bool "I2C"
+	depends on I2C
+endchoice
+
+config TOUCHSCREEN_OMNIVISION_TCM_CORE
+	tristate "Omnivision TCM core module"
+	depends on I2C || SPI_MASTER
+	help
+	  Say Y here to enable core functionality.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called omnivision_tcm_core.
+
+config TOUCHSCREEN_OMNIVISION_TCM_TOUCH
+	tristate "Omnivision TCM touch module"
+	depends on TOUCHSCREEN_OMNIVISION_TCM_CORE
+	help
+	  Say Y here to enable support for touch reporting.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called omnivision_tcm_touch.
+
+endif
